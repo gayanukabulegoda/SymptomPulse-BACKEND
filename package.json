@@ -1,0 +1,46 @@
+{
+  "name": "symptompulse-backend",
+  "version": "1.0.0",
+  "description": "Node.js/Express backend for SymptomPulse. Manages symptom/medication data, integrates FDA APIs, and handles JWT authentication. Built with TypeScript, MySQL, and Prisma ORM for robust data modeling.",
+  "homepage": "https://github.com/gayanukabulegoda/SymptomPulse-BACKEND#readme",
+  "bugs": {
+    "url": "https://github.com/gayanukabulegoda/SymptomPulse-BACKEND/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gayanukabulegoda/SymptomPulse-BACKEND.git"
+  },
+  "license": "MIT",
+  "author": "Gayanuka Bulegoda",
+  "type": "commonjs",
+  "main": "src/server.ts",
+  "scripts": {
+    "start": "nodemon src/server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/config": "^3.3.5",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.13.4",
+    "express": "^4.21.2",
+    "prisma": "^6.3.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.3.1",
+    "config": "^3.3.12",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.7",
+    "envalid": "^8.0.0",
+    "helmet": "^8.0.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2"
+  }
+}
