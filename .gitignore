@@ -3,3 +3,7 @@ node_modules
 .env
 package-lock.json
 .idea
+
+# Logs
+logs/
+*.log
