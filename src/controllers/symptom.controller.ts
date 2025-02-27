@@ -1,7 +1,10 @@
 import {Request, Response} from 'express';
 import {symptomService} from '../services/symptom.service';
 import logger from "../utils/logger";
-
+/**
+ * @description Controller for /symptoms routes
+ * @returns {Object} Controller functions
+ */
 export const symptomController = {
     async logSymptoms(req: Request, res: Response) {
         try {

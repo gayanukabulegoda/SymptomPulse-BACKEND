@@ -1,3 +1,8 @@
+/**
+ * @class ApiError - Custom error class for API errors
+ * @extends Error - JavaScript built-in error class
+ * @returns {ApiError} - Custom error instance
+ */
 export class ApiError extends Error {
     constructor(
         public statusCode: number,

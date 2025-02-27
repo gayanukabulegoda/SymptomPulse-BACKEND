@@ -1,7 +1,10 @@
 import winston from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
 import {config} from '../config/config';
-
+/**
+ * @description Custom logger configuration with Winston and DailyRotateFile transport for log rotation
+ * @returns {winston.Logger} Winston Logger instance
+ */
 const {combine, timestamp, printf, colorize, errors} = winston.format;
 
 // Custom log format

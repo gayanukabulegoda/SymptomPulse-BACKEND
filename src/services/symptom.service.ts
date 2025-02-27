@@ -1,10 +1,11 @@
-import {PrismaClient} from '@prisma/client';
 import axios from 'axios';
 import {config} from '../config/config';
+import prisma from '../../prisma/prisma-client';
 import logger from "../utils/logger";
-
-const prisma = new PrismaClient();
-
+/**
+ * @description Service layer for symptom logging and fetching
+ * @exports symptomService
+ */
 export const symptomService = {
     async logSymptoms(userId: number, symptoms: string[]) {
         // Save symptoms to database

@@ -12,7 +12,10 @@ import {ApiError} from './utils/apiError';
 import {errorConverter, errorHandler} from './middleware/error.middleware';
 import {morganStream} from "./utils/logger";
 import logger from "./utils/logger";
-
+/**
+ * @description Main Express application instance with middleware pipeline
+ * @returns {Express} Express application instance
+ */
 const app = express();
 
 // Middleware pipeline
@@ -29,10 +32,10 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 
 // API routes
-app.use('/api/auth', authRoutes);
-app.use('/api/symptoms', symptomRoutes);
-app.use('/api/medications', medicationRoutes);
-app.use('/api/notifications', notificationRoutes);
+app.use(`/api/${config.CURRENT_API_VERSION}/auth`, authRoutes);
+app.use(`/api/${config.CURRENT_API_VERSION}/symptoms`, symptomRoutes);
+app.use(`/api/${config.CURRENT_API_VERSION}/medications`, medicationRoutes);
+app.use(`/api/${config.CURRENT_API_VERSION}/notifications`, notificationRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

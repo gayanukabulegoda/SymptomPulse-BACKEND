@@ -1,5 +1,9 @@
 import {z} from 'zod';
-
+/**
+ * @description Auth validation schema
+ * @property {object} register - Register validation schema
+ * @property {object} login - Login validation schema
+ */
 export const authValidation = {
     register: z.object({
         body: z.object({

@@ -1,10 +1,12 @@
-import {PrismaClient} from '@prisma/client';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {config} from '../config/config';
+import prisma from '../../prisma/prisma-client';
 import logger from "../utils/logger";
-
-const prisma = new PrismaClient();
+/**
+ * @description Service layer for user authentication
+ * @exports authService
+ */
 const SALT_ROUNDS = 10;
 
 export const authService = {
@@ -40,7 +42,7 @@ export const authService = {
         const accessToken = jwt.sign(
             {id: userId},
             config.JWT_SECRET,
-            {expiresIn: "15m"}
+            {expiresIn: "30m"}
         );
 
         const refreshToken = jwt.sign(
@@ -64,6 +66,13 @@ export const authService = {
         await prisma.userSession.updateMany({
             where: {token},
             data: {revoked: true}
+        });
+    },
+
+    async getUserByEmail(email: string) {
+        return prisma.user.findUnique({
+            where: {email},
+            select: {id: true, email: true, name: true}
         });
     }
 };

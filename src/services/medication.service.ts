@@ -1,9 +1,10 @@
-import {PrismaClient} from '@prisma/client';
 import {MedicationSchedule} from '@prisma/client';
 import {notificationService} from "./notification.service";
-
-const prisma = new PrismaClient();
-
+import prisma from '../../prisma/prisma-client';
+/**
+ * @description Service layer for medication management
+ * @exports medicationService
+ */
 export const medicationService = {
     async addMedication(
         userId: number,
@@ -35,30 +36,12 @@ export const medicationService = {
         return medication;
     },
 
-    generateReminders(schedule: MedicationSchedule, startDate: Date) {
-        const reminders = [];
-        const baseTime = startDate.getTime();
-
-        // Simple scheduling logic (customize as needed)
-        switch (schedule) {
-            case 'DAILY':
-                for (let i = 0; i < 7; i++) {
-                    reminders.push({scheduledTime: new Date(baseTime + i * 24 * 60 * 60 * 1000)});
-                }
-                break;
-            case 'TWICE_DAILY':
-                for (let i = 0; i < 7; i++) {
-                    reminders.push({scheduledTime: new Date(baseTime + i * 12 * 60 * 60 * 1000)});
-                }
-                break;
-        }
-
-        return reminders;
-    },
-
     async getMedications(userId: number) {
         return prisma.medicationEntry.findMany({
             where: {userId},
+            orderBy: {
+                id: 'desc'
+            },
             include: {reminders: true}
         });
     }

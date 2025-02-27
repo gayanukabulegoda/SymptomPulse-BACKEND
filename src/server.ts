@@ -2,12 +2,22 @@ import {PrismaClient} from "@prisma/client";
 import {config} from './config/config';
 import app from "./app";
 import logger from "./utils/logger";
-
-const prisma = new PrismaClient();
-
 /**
- * @description Connect to the database and start the server
+ * @author: Gayanuka Bulegoda
+ * @github: https://github.com/gayanukabulegoda
+ * @website: https://grbulegoda.me
+ * -------------------------------------------------------------------
+ * @project: SymptomPulse BACKEND
+ * @since: 20-02-2025 06:22 PM
+ * @version: 1.0.0
+ * -------------------------------------------------------------------
+ * @file: server.ts (Main server file)
+ * -------------------------------------------------------------------
  */
+const prisma = new PrismaClient();
+const PORT = config.PORT || 5000;
+
+// Connect to the database and start the server
 const connectDB = async () => {
     try {
         await prisma.$connect();
@@ -17,8 +27,6 @@ const connectDB = async () => {
         process.exit(1);
     }
 };
-
-const PORT = config.PORT || 5000;
 
 const startServer = async () => {
     try {

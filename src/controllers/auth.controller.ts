@@ -2,7 +2,10 @@ import {Request, Response} from 'express';
 import {authService} from '../services/auth.service';
 import {config} from '../config/config';
 import logger from "../utils/logger";
-
+/**
+ * @description Controller for /auth routes
+ * @returns {Object} Controller functions
+ */
 export const authController = {
     async register(req: Request, res: Response) {
         try {
@@ -22,7 +25,7 @@ export const authController = {
         }
     },
 
-    async login(req: Request, res: Response) {
+    async login(req: Request, res: Response): Promise<void> {
         try {
             const {email, password} = req.body;
             const tokens = await authService.login(email, password);
@@ -37,9 +40,15 @@ export const authController = {
                 maxAge: config.REFRESH_TOKEN_COOKIE_MAX_AGE
             });
 
+            const user = await authService.getUserByEmail(email);
+
             res.json({
                 success: true,
-                data: {accessToken: tokens.accessToken}
+                data: {
+                    accessToken: tokens.accessToken,
+                    email: user?.email,
+                    name: user?.name
+                }
             });
         } catch (error) {
             logger.error('Login error:', error);
@@ -52,7 +61,6 @@ export const authController = {
 
     async refreshToken(req: Request, res: Response) {
         try {
-            // Now using validateRefreshToken middleware
             const tokens = await authService.generateTokens(req.user!.id);
 
             res.cookie('accessToken', tokens.accessToken, {

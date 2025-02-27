@@ -1,5 +1,9 @@
 import {z} from 'zod';
-
+/**
+ * @description Symptom validation schema
+ * @property {object} createEntry - Create symptom entry validation schema
+ * @property {object} getHistory - Get symptom history validation schema
+ */
 export const symptomValidation = {
     createEntry: z.object({
         body: z.object({

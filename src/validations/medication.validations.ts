@@ -1,6 +1,10 @@
 import {z} from 'zod';
 import {MedicationSchedule} from '@prisma/client';
-
+/**
+ * @description Medication validation schema
+ * @function dateSchema - Preprocess date string to Date object
+ * @property {object} createEntry - Create medication entry validation schema
+ */
 const dateSchema = z.preprocess((arg) => {
     if (typeof arg === 'string' || arg instanceof Date) {
         return new Date(arg);

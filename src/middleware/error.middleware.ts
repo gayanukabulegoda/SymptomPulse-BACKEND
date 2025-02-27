@@ -3,7 +3,11 @@ import {ApiError} from '../utils/apiError';
 import {Prisma} from '@prisma/client';
 import {config} from '../config/config';
 import logger from "../utils/logger";
-
+/**
+ * @description Convert errors to ApiError instances for consistency in error handling
+ * @throws {ApiError} - Converted error object
+ * @throws {Error} - Any other error
+ */
 export const errorConverter = (
     err: Error,
     req: Request,

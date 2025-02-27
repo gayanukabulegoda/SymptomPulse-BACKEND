@@ -1,7 +1,10 @@
 import {Request, Response} from 'express';
 import {medicationService} from '../services/medication.service';
 import logger from "../utils/logger";
-
+/**
+ * @description Controller for /medications routes
+ * @returns {Object} Controller functions
+ */
 export const medicationController = {
     async addMedication(req: Request, res: Response) {
         try {

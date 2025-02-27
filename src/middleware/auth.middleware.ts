@@ -1,12 +1,17 @@
 import {Request, Response, NextFunction} from 'express';
 import jwt from 'jsonwebtoken';
-import {PrismaClient} from '@prisma/client';
+import prisma from '../../prisma/prisma-client';
 import {ApiError} from '../utils/apiError';
 import {config} from '../config/config';
 import logger from "../utils/logger";
-
-const prisma = new PrismaClient();
-
+/**
+ * @description Middleware to authenticate user by verifying ACCESS token in header or cookie
+ * @returns {Promise<void>} - Calls the next middleware function
+ * @throws {ApiError} 401 - Authentication required
+ * @throws {ApiError} 401 - Invalid authentication credentials
+ * @throws {ApiError} 401 - User not found
+ * @throws {Error} Any other error
+ */
 declare module 'express' {
     interface Request {
         user?: {
@@ -29,7 +34,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
         // Verify ACCESS token only (no session check)
         const decoded = jwt.verify(token, config.JWT_SECRET) as { id: number };
 
-        // Optional: Check user exists
+        // Check user exists
         const user = await prisma.user.findUnique({
             where: { id: decoded.id },
             select: { id: true, role: true }
@@ -48,7 +53,6 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     }
 };
 
-// New middleware for refresh token validation
 export const validateRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const refreshToken = req.cookies.refreshToken;

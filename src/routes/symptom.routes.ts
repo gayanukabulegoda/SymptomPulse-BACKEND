@@ -3,17 +3,17 @@ import {symptomController} from '../controllers/symptom.controller';
 import {authenticate} from '../middleware/auth.middleware';
 import {validateRequest} from "../middleware/validation.middleware";
 import {symptomValidation} from "../validations/symptom.validations";
-
+/**
+ * @description Router for /symptoms routes
+ * @returns {Router} Express Router
+ */
 const router = express.Router();
 
-// Apply authentication to all symptom routes
 router.use(authenticate);
-
 router.post('/',
     validateRequest(symptomValidation.createEntry),
     symptomController.logSymptoms
 );
-
 router.get('/',
     validateRequest(symptomValidation.getHistory),
     symptomController.getHistory
