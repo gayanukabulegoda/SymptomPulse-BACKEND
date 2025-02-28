@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int               @id @default(autoincrement())
+  name         String?
+  email        String            @unique
+  passwordHash String
+  role         Role              @default(USER)
+  symptoms     SymptomEntry[]
+  medications  MedicationEntry[]
+  sessions     UserSession[]
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  Notification Notification[]
+
+  @@index([email])
+  @@index([createdAt])
+  @@map("users")
+}
+
+model SymptomEntry {
+  id         Int                   @id @default(autoincrement())
+  userId     Int
+  user       User                  @relation(fields: [userId], references: [id])
+  symptoms   Json // Stored as JSON array (e.g., ["headache", "fever"])
+  entryDate  DateTime              @default(now())
+  conditions ConditionSuggestion[]
+  createdAt  DateTime              @default(now())
+  updatedAt  DateTime              @updatedAt
+
+  @@index([userId])
+  @@index([entryDate])
+  @@map("symptom_entries")
+}
+
+model ConditionSuggestion {
+  id             Int          @id @default(autoincrement())
+  symptomEntryId Int
+  symptomEntry   SymptomEntry @relation(fields: [symptomEntryId], references: [id])
+  conditionName  String // From OpenFDA API
+  likelihood     String? // "High", "Medium", "Low" (optional)
+  apiSource      String // e.g., "open_fda"
+  createdAt      DateTime     @default(now())
+
+  @@map("condition_suggestions")
+}
+
+model MedicationEntry {
+  id        Int                @id @default(autoincrement())
+  userId    Int
+  user      User               @relation(fields: [userId], references: [id])
+  name      String
+  dosage    String?
+  schedule  MedicationSchedule
+  startDate DateTime
+  endDate   DateTime?
+  reminders Notification[]
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+
+  @@map("medication_entries")
+}
+
+model Notification {
+  id                Int              @id @default(autoincrement())
+  userId            Int
+  user              User             @relation(fields: [userId], references: [id])
+  title             String
+  body              String
+  scheduledAt       DateTime
+  isSent            Boolean          @default(false)
+  createdAt         DateTime         @default(now())
+  medicationEntry   MedicationEntry? @relation(fields: [medicationEntryId], references: [id])
+  medicationEntryId Int?
+
+  @@index([userId])
+  @@index([scheduledAt])
+  @@map("notifications")
+}
+
+model UserSession {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  token     String   @unique
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("user_sessions")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum MedicationSchedule {
+  DAILY
+  TWICE_DAILY
+  WEEKLY
+  AS_NEEDED
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+  CANCELED
+}
