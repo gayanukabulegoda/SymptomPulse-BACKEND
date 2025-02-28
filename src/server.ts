@@ -5,7 +5,7 @@ import logger from "./utils/logger";
 /**
  * @author: Gayanuka Bulegoda
  * @github: https://github.com/gayanukabulegoda
- * @website: https://grbulegoda.me
+ * @portfolio: https://grbulegoda.me
  * -------------------------------------------------------------------
  * @project: SymptomPulse BACKEND
  * @since: 20-02-2025 06:22 PM
